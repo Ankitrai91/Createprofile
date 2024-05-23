@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <title>AngularJS CRUD Practice Project</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="app.js"></script>
+  <script src="controllers/userController.js"></script>
+  <script src="services/userService.js"></script>
+</head>
+<body ng-controller="UserController">
+
+<div class="container">
+  <h2>Create User</h2>
+
+  <form ng-submit="submitUser()">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" id="name" ng-model="user.name" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" ng-model="user.email" required>
+    </div>
+    <div class="form-group">
+      <label for="age">Age:</label>
+      <input type="number" class="form-control" id="age" ng-model="user.age" required>
+    </div>
+    <div class="form-group">
+      <label for="profilePicture">Profile Picture:</label>
+      <input type="file" class="form-control" id="profilePicture" file-model="user.profilePicture" accept="image/*">
+    </div>
+    <button type="submit" class="btn btn-primary">{{editMode ? 'Update' : 'Add'}}</button>
+    <button type="button" class="btn btn-secondary" ng-click="resetForm()">Cancel</button>
+  </form>
+
+  <br>
+
+  <h4>User's List</h4>
+  <div style="display: flex;justify-content: space-between;">
+
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Search users..." ng-model="searchQuery">
+    </div>
+    <div style="display: flex;" class="form-group">
+      <label for="sortCriteria">Sort by:</label>
+      <select class="form-control" ng-model="sortCriteria" ng-init="sortCriteria='name'">
+        <option value="name">Name</option>
+        <option value="age">Age</option>
+        <option value="email">Email</option>
+      </select>
+    </div>
+  </div>
+    
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in paginatedUsers | filter:searchQuery | orderBy:sortCriteria">
+        <td style="display: flex;
+        justify-content: center;">
+          <img ng-src="{{user.profilePicture}}" alt="Profile Picture" class="img-thumbnail" width="50" height="50">
+        </td>
+        <td>{{user.name}}</td>
+        <td>{{user.age}}</td>
+        <td>{{user.email}}</td>
+        <td>
+          <button class="btn btn-info btn-sm" ng-click="editUser(user)">Edit</button>
+          <button class="btn btn-danger btn-sm" ng-click="deleteUser(user.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ul class="pagination">
+    <li ng-class="{disabled: currentPage === 1}">
+      <a href="#" ng-click="setPage(1)">&laquo;</a>
+    </li>
+    <li ng-repeat="page in pages" ng-class="{active: currentPage === page}">
+      <a href="#" ng-click="setPage(page)">{{page}}</a>
+    </li>
+    <li>
+      <span>Page {{currentPage}} of {{totalPages}}</span>
+    </li>
+    <li ng-class="{disabled: currentPage === totalPages}">
+      <a href="#" ng-click="setPage(totalPages)">&raquo;</a>
+    </li>
+
+  </ul>
+</div>
+
+</body>
+</html>

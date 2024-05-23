@@ -1,0 +1,15 @@
+.container {
+    margin-top: 20px;
+    width: 50%;
+    border: 2px solid red;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+  }
+  .img-thumbnail {
+    width: 50px;
+    height: 50px;
+    border-radius: 3rem;
+  }
